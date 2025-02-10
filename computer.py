@@ -1,6 +1,8 @@
+# create a computer class with computer characteristics 
+
 class Computer:
 
-    # What attributes will it need?
+    # attributes that class Computer uses
    
     description: str
     processor_type: str
@@ -10,8 +12,7 @@ class Computer:
     year_made: int
     price: int
                                                                                                                                                                                                                                                                                                                                                    
-    # How will you set up your constructor?
-        # Remember: in python, all constructors have the same name (__init__)
+    # constructor for class Computer that initialize attributes
     
     def __init__(self, description:str, processor_type:str, hard_drive_capacity:int, memory:int, operating_system:str, year_made:int, price:int):
         self.description = description
@@ -22,7 +23,9 @@ class Computer:
         self.year_made = year_made
         self.price = price
     
-    # What methods will you need?
+    # methods for class Computer
+
+    # print computer descriptions in readable format
     def print_comp(self):
         return {'description': self.description,
                 'processor_type': self.processor_type,
@@ -33,18 +36,32 @@ class Computer:
                 'price': self.price
         }
     
+    # update the operating system of the computer
     def update_os(self, newOS:str) :
         self.operating_system = newOS
         print("\nNew System is: ",  self.operating_system)
-    
+
+# use class Computer
+   
 def main():
+
+    # store information about a specific computer
     myComp = Computer(
         "Mac Pro (Late 2013)",
         "3.5 GHc 6-Core Intel Xeon E5",
         1024, 64,
         "macOS Big Sur", 2013, 1500
     )
+
+    # print a little banner
+    print("-" * 21)
+    print("COMPUTER SHOW-OFF")
+    print("-" * 21)
+
+    # current computer
     print("\nHere is my computer: \n", myComp.print_comp())
+
+    # update operating system of the computer
     myComp.update_os("Seqouia")
     print("\nHere is my new computer: \n", myComp.print_comp())
 

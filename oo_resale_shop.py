@@ -1,23 +1,27 @@
+# import necessary materials
 from computer import *  
 from typing import Optional
 
+# create a resale shop that buys and sells computers
+
 class ResaleShop:
 
-    # What attributes will it need?
+    # attributes of the Resale Shop
     inventory = []
-    item_id = 0
+    item_id = 1
     
-    # How will you set up your constructor?
-    # Remember: in python, all constructors have the same name (__init__)
+    # constructor of the Resale Shop
 
     def __init__(self):
-        # initialize an empty list of inventory
-        self.inventory = []
+        
+        self.inventory = []     # initialize an empty list of inventory
+        self.item_id = 1        # computer ID start from 1
 
+    # methods of the Resale Shop
 
-    # What methods will you need?
-
+    # buy a computer
     def buy(self, description:str, processor_type:str, hard_drive_capacity:int, memory:int, operating_system:str, year_made:int, price:int):
+        # create a computer
         comp = Computer(description,
                 processor_type,
                 hard_drive_capacity,
@@ -27,36 +31,46 @@ class ResaleShop:
                 price)
         # call constructor to create a new computer instance
         self.inventory.append(comp)
-        self.item_id += 1 # assign an ID to the computer
-        # add new computer instance to the inventory
+        self.item_id += 1  # assign an ID to the computer
+        # add new computer ID to the inventory
         return self.inventory.index(comp)
     
+    # update price of the computer
     def update_price(self, item_id: int, new_price: int):
-        if item_id in self.inventory:
+        # check whether id exist in inventory
+        if len(self.inventory) > item_id and self.inventory[item_id] is not None:
+            # change to new price
             self.inventory[item_id].price = new_price
-            print("Updated ", item_id, " to $", new_price)
+            print("\nUpdated ", item_id, " to $", new_price)
+        # print error message
         else:
-            print("Item", item_id, "not found. Cannot update price.")
+            print("\nItem", item_id, "not found. Cannot update price.")
 
+    # sell the computer
     def sell(self, item_id: int) :
-        if item_id in self.inventory:
+        # check whether id exist in inventory
+        if len(self.inventory) > item_id and self.inventory[item_id] is not None:
+            # remove item
             self.inventory.pop(item_id)
-            print("Item", item_id, "sold!")
+            print("\nItem", item_id, "sold!")
+        # print error message
         else: 
-            print("Item", item_id, "not found. Please select another item to sell.")
+            print("\nItem", item_id, "not found. Please select another item to sell.")
 
+    # print the inventory
     def print_inventory(self):
-        # If the inventory is not empty
+        # check whether the inventory is empty
         if self.inventory:
-            # For each item
+            # print details of every item in the inventory
             for item in self.inventory:
-                # Print its details
                 print(f'Item ID: {self.inventory.index(item)} : {item.print_comp()}')
         else:
             print("No inventory to display.")
 
+    # refurbish the computer
     def refurbish(self, item_id: int, new_OS: Optional[str] = None):
-        if self.inventory[item_id] is not None:
+        # check whether id exist in inventory
+        if len(self.inventory) > item_id and self.inventory[item_id] is not None:
             computer = self.inventory[item_id] # locate the computer
             if int(computer.year_made) < 2000:
                 computer.price = 0 # too old to sell, donation only
@@ -69,37 +83,61 @@ class ResaleShop:
 
             if new_OS is not None:
                 computer.operating_system = new_OS # update details after installing new OS
+        # error message
         else:
-            print("Item", item_id, "not found. Please select another item to refurbish.")
+            print("\nItem", item_id, "not found. Please select another item to refurbish.")
         
 
 def main():
+
+    # store the shop
     shop = ResaleShop()
-    
+
+    # print a little banner
+    print("-" * 21)
+    print("COMPUTER RESALE STORE")
+    print("-" * 21)
+
+    # current inventory after purchase
+    print("\n Inventory before purchase:")
+    shop.print_inventory()
+
     # buy some computers
     bought1 = shop.buy("2012 MacBook Air", "Intel i5", 128, 4, "macOS Lion", 2012, 600)
     bought2 = shop.buy("2022 MacBook Pro", "M2", 256, 6, "Sequoia 15.0", 2022, 1000)
-    
+
     # current inventory after purchase
-    print("\n Inventory after purchase:")
+    print("\n Inventory - Purchased 2 computers:")
     shop.print_inventory()
 
     # update price
     shop.update_price(bought2, 1100)
 
+    # current inventory
+    print("\nInventory - price updating:")
+    shop.print_inventory()
+
     # refurbish old computer's OS
     shop.refurbish(bought1, new_OS = "Catalina")
 
     # current inventory
-    print("\nCurrent Inventory after price updating and refurbishing:")
+    print("\nInventory - refurbishing:")
     shop.print_inventory()
 
     # sell the 2022 mac
     shop.sell(bought2)
 
     # current inventory
-    print("\nInventory after selling a computer:")
+    print("\nInventory - selling a computer:")
     shop.print_inventory()
+
+    # try error messages
+    print("\n-------------")
+    print("Check errors")
+    print("-------------")
+    shop.update_price(5, 100)
+    shop.sell(5)
+    shop.refurbish(5)
 
 
 if __name__ == "__main__":
